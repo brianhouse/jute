@@ -33,7 +33,8 @@ def music(message):
     template = template.replace("MUSIC", song).replace("TITLE", message)
     with open("result.ly", "w") as f:
         f.write(template)
-    subprocess.call("lilypond result.ly; open result.pdf; open result.midi", shell=True)
+    result = subprocess.run(["lilypond", "-fpng", "result.ly"])
+    return result.returncode == 0
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

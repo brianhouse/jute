@@ -1,7 +1,12 @@
 \version "2.18.2"
 
+\paper {
+  #(set-paper-size "quarto")
+}
+
 \header {
   title = "TITLE"
+  tagline = ""  % removed 
 }
 
 \score {
