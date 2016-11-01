@@ -4,8 +4,8 @@ import os, curses, itertools, time, queue
 import link
 from housepy import config, log
 
-receiver = link.Receiver()
-sender = link.Sender()
+receiver = link.Receiver(23232)
+sender = link.Sender(23234)
 
 messages = []
 spinner = itertools.cycle(['—', '\\', '|', '/'])
@@ -27,7 +27,7 @@ def curses_main(args):
                 if i < len(messages):                    
                     message = messages[-1 * (i + 1)]
                     index = messages.index(message)
-                    color = 1 if message[1] == 0 else 2
+                    color = 1 if message[0] == 0 else 2
                     w.addstr(LINES - i - 2, 0, message[1], curses.A_BOLD | curses.color_pair(color))    # draw the line
                     w.clrtoeol()                                                                        # erase the rest of it
             if ready:

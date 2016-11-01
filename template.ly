@@ -1,7 +1,7 @@
 \version "2.18.2"
 
 \paper {
-  #(set-paper-size "quarto")
+  #(set-paper-size "half letter" 'landscape)
 }
 
 \header {
@@ -24,9 +24,9 @@
 
     \layout { }
 
-    \midi {
-        \tempo 4 = 120
-    }
+%    \midi {
+%        \tempo 4 = 120
+%    }
 
 }    
 

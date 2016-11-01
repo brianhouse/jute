@@ -33,7 +33,10 @@ def music(message):
     template = template.replace("MUSIC", song).replace("TITLE", message)
     with open("result.ly", "w") as f:
         f.write(template)
-    result = subprocess.run(["lilypond", "-fpng", "result.ly"])
+    result = subprocess.run(["lilypond", "-fpng", "result.ly"], stdout=subprocess.PIPE)
+    log.info(result.stdout)
+    result = subprocess.run(["convert", "-rotate", "90", "result.png", "result.png"], stdout=subprocess.PIPE) # annoying
+    log.info(result.stdout)
     return result.returncode == 0
 
 if __name__ == "__main__":
@@ -43,3 +46,5 @@ if __name__ == "__main__":
     message = sys.argv[1]
     decode(encode(message))
     music(message)
+    subprocess.run(["open", "result.png"])
+    # subprocess.run(["open", "result.midi"])

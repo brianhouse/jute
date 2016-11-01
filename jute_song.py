@@ -1,3 +1,5 @@
+from housepy import log
+
 phrases = [ "d'4 e'4",
             "d'4. c'8",
             "d'4 d'16 g'8.",
@@ -58,7 +60,7 @@ def purge_dups(phrases):
                 dups.extend(matches[1:])
     phrases = [phrase for (p, phrase) in enumerate(phrases) if (p not in dups)]
     if len(phrases) < 32:
-        print("WARNING: insufficient encoder length (%s)" % len(phrases))   
+        log.warning("WARNING: insufficient encoder length (%s)" % len(phrases))   
     return phrases        
 
 phrases = purge_dups(phrases)

@@ -27,9 +27,10 @@ class Receiver(threading.Thread):
 
 class Sender(threading.Thread):
 
-    def __init__(self):
+    def __init__(self, port=23232):
         super(Sender, self).__init__()
         self.daemon = True
+        self.port = port
         self.messages = queue.Queue()
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.settimeout(1)
@@ -38,9 +39,9 @@ class Sender(threading.Thread):
     def run(self):
         while True:
             try:
-                message, address = self.messages.get(), ("localhost", 23234)
+                message, address = self.messages.get(), ("localhost", self.port)
                 log.info("SENDING [%s] to %s:%s" % (message, address[0], address[1]))
-                self.socket.sendto(message.encode('ascii'), address)
+                self.socket.sendto(message.encode(), address)
             except Exception as e:
                 log.error(log.exc(e))
 
