@@ -1,0 +1,1 @@
+- trust that no string is going to break the encoder
