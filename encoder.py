@@ -13,11 +13,14 @@ def encode(s):
     return result
 
 def decode(s):
-    padding = (((len(s) // 8) + 1) * 8) - len(s) if len(s) % 8 != 0 else 0
-    padding = "=" * padding
-    result = smaz.decompress(base64.b32decode((s + padding)).decode())
-    log.info("%s %s %s %s" % (s, len(s), result, len(result)))
-    return result
+    try:
+        padding = (((len(s) // 8) + 1) * 8) - len(s) if len(s) % 8 != 0 else 0
+        padding = "=" * padding
+        result = smaz.decompress(base64.b32decode((s + padding)).decode())
+        log.info("%s %s %s %s" % (s, len(s), result, len(result)))
+        return result
+    except Exception:
+        return False
 
 def music(message):
     song = []
@@ -45,6 +48,6 @@ if __name__ == "__main__":
         exit()
     message = sys.argv[1]
     decode(encode(message))
-    music(message)
-    subprocess.run(["open", "result.png"])
+    # music(message)
+    # subprocess.run(["open", "result.png"])
     # subprocess.run(["open", "result.midi"])
