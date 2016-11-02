@@ -63,8 +63,8 @@ def on_mouse_press(data):
             partial = encoder.decode("".join(incoming_message))
             if partial is not False:
                 partial_decoding = partial
-            label.text = "%s\n%s" % ("".join(incoming_message), partial_decoding)
-            # label.text = "%s\n%s" % (("•" * len(incoming_message)), partial_decoding)
+            # label.text = "%s\n%s" % ("".join(incoming_message), partial_decoding)
+            label.text = "%s\n%s" % (("•" * len(incoming_message)), partial_decoding)
             break
 
 ctx.add_callback("mouse_press", on_mouse_press)
