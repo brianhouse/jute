@@ -2,12 +2,15 @@
 
 import os, curses, itertools, time, queue, atexit
 import link
-from housepy import config, log
+from housepy import config, log, util
 
 receiver = link.Receiver(23232)
 sender = link.Sender(23234)
 
-messages = []
+try:
+    messages = util.load("transcript.pkl")
+except Exception:
+    messages = []
 spinner = itertools.cycle(['—', '\\', '|', '/'])
 ready = config['start']
 
@@ -40,11 +43,18 @@ def curses_main(args):
                 w.addstr(LINES - 1, 0, "> ", curses.color_pair(1))          # display something
                 w.clrtoeol()                                                # erase from cursor to end of line                
                 message_s = w.getstr().decode().strip()                     # allow typing and return
-                if len(message_s):
+                remove = [c for c in message_s if ord(c) > 127]             # enforce ASCII
+                for c in remove:
+                    message_s = message_s.replace(c, '')                
+                if message_s == "maradona":
+                    exit()          
+                elif message_s == "undo":
+                    messages.pop()          
+                elif len(message_s):
                     messages.append((0, message_s))
-                sender.messages.put(message_s)
-                flush_messages()
-                ready = False
+                    sender.messages.put(message_s)
+                    flush_messages()
+                    ready = False
 
             # get a response
             else:
@@ -78,6 +88,7 @@ def flush_messages():
             break
 
 def exit_handler():
+    util.save("transcript.pkl", messages)
     print("Exiting...")
 atexit.register(exit_handler)
 

@@ -7,6 +7,9 @@ from housepy import config, log
 CHARACTERS = 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6', '7'
 
 def encode(s):
+    remove = [c for c in s if ord(c) > 127]
+    for c in remove:
+        s = s.replace(c, '')
     result = base64.b32encode(smaz.compress(s).encode()).decode()
     result = result.strip("=")
     log.info("%s %s %s %s" % (s, len(s), result, len(result)))

@@ -4,3 +4,4 @@ housepy
 logs
 result.*
 config.yaml
+transcript.pkl
