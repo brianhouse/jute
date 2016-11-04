@@ -81,8 +81,10 @@ def draw_reception():
         filename = "phrases/%s.png" % (i if len(str(i)) == 2 else "0%s" % i)
         image = Image.open(filename)
         w, h = image.size
-        x1 = 400 + (i % 8) * (70 + 25)
-        y1 = ctx.height - ((i // 8) * (70 + 25)) - 200
+        # x1 = 400 + (i % 8) * (70 + 25)
+        x1 = 20 + (i % 8) * (70 + 25)
+        # y1 = ctx.height - ((i // 8) * (70 + 25)) - 200
+        y1 = ctx.height - ((i // 8) * (70 + 25)) - 100
         x2 = x1 + w
         y2 = y1 + h
         ctx.load_image(filename, x1, y1, w, h)
