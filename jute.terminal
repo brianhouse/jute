@@ -39,9 +39,11 @@
 	<key>columnCount</key>
 	<integer>40</integer>
 	<key>name</key>
-	<string>Basic</string>
+	<string>jute 1</string>
 	<key>rowCount</key>
 	<integer>10</integer>
+	<key>shellExitAction</key>
+	<integer>0</integer>
 	<key>type</key>
 	<string>Window Settings</string>
 </dict>
