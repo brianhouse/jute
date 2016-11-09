@@ -7,13 +7,14 @@ from housepy import config, log, animation
 
 FILENAME = "result.png"
 
+CHARACTERS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ!?.,;:()"
+
 first_time = True
 waiting = True
 transmitting = False
 label = None
 
 incoming_message = []
-partial_decoding = ""
 coords = []
 
 sender = link.Sender(23232)
@@ -24,47 +25,44 @@ ctx = animation.Context(859, 556, title="JUTE", background=(1., 1., 1., 1.), scr
 
 
 def on_mouse_press(data):
-    global waiting, transmitting, current_string, incoming_message, partial_decoding
+    global waiting, transmitting, current_string, incoming_message
 
     # waiting mode, nothing happens
     if waiting:
+        log.debug("MODE: waiting")
         return
 
     # transmitting mode, we've clicked, so go into receiving mode
     if transmitting:            
+        log.debug("MODE: transmitting")
         ctx.textures = []                
         incoming_message = []
-        partial_decoding = ""
         label.text = ""
         draw_reception()        
         transmitting = False
         return
 
     # receiving mode: process clicks and build message
+    log.debug("MODE: receiving")    
     x, y, button, modifiers = data
     x *= ctx.width
     y *= ctx.height
     for c, coord in enumerate(coords):
         if x > coord[0][0] and x < coord[1][0] and y > coord[0][1] and y < coord[1][1]:                
-            if c == 33:
-                sender.messages.put(partial_decoding.strip())
+            if c == 36:
+                sender.messages.put("".join(incoming_message).strip())
                 ctx.textures = []                
                 incoming_message = []
-                partial_decoding = ""
                 label.text = ""
                 result = subprocess.run(["osascript", "focus.scpt", "main_terminal"], stdout=subprocess.PIPE)
                 log.info(result)        
                 waiting = True                
-            elif c == 32:
+            elif c == 35:
                 incoming_message = incoming_message[:-1]
             else:
-                character = encoder.CHARACTERS[c]
+                character = CHARACTERS[c]
                 incoming_message.append(character)
-            partial = encoder.decode("".join(incoming_message))
-            if partial is not False:
-                partial_decoding = partial
-            # label.text = "%s\n%s" % ("".join(incoming_message), partial_decoding)
-            label.text = "%s\n%s" % (("•" * len(incoming_message)), partial_decoding)
+            label.text = "".join(incoming_message)
             break
 
 ctx.add_callback("mouse_press", on_mouse_press)
