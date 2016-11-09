@@ -39,7 +39,9 @@ def curses_main(args):
                 index = messages.index(message)
                 color = 1 if message[0] == 0 else 2
                 w.addstr(LINES - i - 2, 0, "  " + message[1], curses.A_BOLD | curses.color_pair(color))    # draw the line
-                w.clrtoeol()      
+            else:
+                w.addstr(LINES - i - 2, 0, "")
+            w.clrtoeol()      
                                                                         # erase the rest of it
         # take input
         if ready:
@@ -60,7 +62,9 @@ def curses_main(args):
                 if message_s == "MARADONA":
                     exit()          
                 elif message_s == "UNDO":
-                    messages.pop()          
+                    if len(messages):
+                        messages.pop()          
+                    current = []
                 elif len(message_s):
                     messages.append((0, message_s))
                     sender.messages.put(message_s)

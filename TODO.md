@@ -10,8 +10,4 @@
 
 - should come in letter by letter, right
 
-- fix UNDO
-
 - extra 3
-
-- 
