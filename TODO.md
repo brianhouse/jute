@@ -4,4 +4,13 @@
 
 - disable modifier keys
 
-- how to restart a message?
+- check max character length
+
+//
+
+- should come in letter by letter, right
+
+- restrict character set, if this needs to be letter by letter
+
+- fix UNDO
+

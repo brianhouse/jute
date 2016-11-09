@@ -22,8 +22,15 @@ def decode(s):
         result = smaz.decompress(base64.b32decode((s + padding)).decode())
         log.info("%s %s %s %s" % (s, len(s), result, len(result)))
         return result
-    except Exception:
+    except Exception as e:
+        log.error(e)
         return False
+
+def encode(s):
+    return s
+
+def decode(s):
+    return s
 
 def music(message):
     song = []

@@ -20,7 +20,7 @@ sender = link.Sender(23232)
 receiver = link.Receiver(23234)
 
 animation.show_fps = False
-ctx = animation.Context(859, 556, title="JUTE", background=(1., 1., 1., 1.), screen=1, fullscreen=True, chrome=False)  
+ctx = animation.Context(859, 556, title="JUTE", background=(1., 1., 1., 1.), screen=1, fullscreen=False, chrome=False)  
 
 
 def on_mouse_press(data):
@@ -110,5 +110,7 @@ def draw():
     time.sleep(0.05)
 
 if not config['start']:
+    waiting = False
+    transmitting = False
     draw_reception()    
 ctx.start(draw)
