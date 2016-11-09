@@ -4,6 +4,8 @@ import os, curses, itertools, time, queue, atexit
 import link
 from housepy import config, log, util
 
+CHARACTERS = config['characters']
+
 receiver = link.Receiver(23232)
 sender = link.Sender(23234)
 
@@ -50,13 +52,14 @@ def curses_main(args):
                 if ch == 127 or ch == 8:
                     if len(current):
                         current.pop()
-                elif ch < 128 and len(current) < 30:                    # restrict to ascii. make it 256 if you need latin.
-                    current.append(chr(ch))
+                # elif ch < 128 and len(current) < 30:                    # restrict to ascii. make it 256 if you need latin.
+                elif len(current) < 30 and chr(ch).upper() in CHARACTERS:
+                    current.append(chr(ch).upper())
             else:
                 message_s = "".join(current).strip()
-                if message_s == "maradona":
+                if message_s == "MARADONA":
                     exit()          
-                elif message_s == "undo":
+                elif message_s == "UNDO":
                     messages.pop()          
                 elif len(message_s):
                     messages.append((0, message_s))

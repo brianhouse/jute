@@ -7,7 +7,7 @@ from housepy import config, log, animation
 
 FILENAME = "result.png"
 
-CHARACTERS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ!?.,;:()"
+CHARACTERS = config['characters']
 
 first_time = True
 waiting = True
