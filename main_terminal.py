@@ -68,6 +68,7 @@ def curses_main(args):
                 elif len(message_s):
                     messages.append((0, message_s))
                     sender.messages.put(message_s)
+                    current = []
                     flush_messages()
                     ready = False
             w.addstr(LINES - 1, 0, "> %s" % "".join(current), curses.color_pair(1))          # display something

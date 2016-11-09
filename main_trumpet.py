@@ -38,6 +38,7 @@ def on_mouse_press(data):
         ctx.textures = []                
         incoming_message = []
         label.text = ""
+        ctx.objects = [o for o in o if o is label]
         draw_reception()        
         transmitting = False
         return
@@ -54,6 +55,7 @@ def on_mouse_press(data):
                 ctx.textures = []                
                 incoming_message = []
                 label.text = ""
+                ctx.objects = [o for o in o if o is label]
                 result = subprocess.run(["osascript", "focus.scpt", "main_terminal"], stdout=subprocess.PIPE)
                 log.info(result)        
                 waiting = True                
@@ -86,6 +88,7 @@ def draw_reception():
         x2 = x1 + w
         y2 = y1 + h
         ctx.load_image(filename, x1, y1, w, h)
+        ctx.label((x1 + ((x2 - x1) / 2)) / ctx.width, (y1 + 70) / ctx.height, CHARACTERS[i], font="Monaco", center=True, width=30, size=8)
         coords.append(((x1, y1), (x2, y2)))    
 
 def draw():
