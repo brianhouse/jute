@@ -20,80 +20,79 @@ current = []
 
 def curses_main(args):
     global ready, receiver, sender, current
-    # try:
-    w = curses.initscr()                                            # initialize
-    curses.use_default_colors()                                     # use the terminal settings for color_pair 0, otherwise it's black and white
-    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)     # define some other color pairs
-    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_WHITE)
-    curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_YELLOW)
-    w.bkgd(" ", curses.color_pair(1))                               # use a custom for the default
-    # curses.echo()                                                 # show what's being typed
-    curses.noecho()                                                 # or dont
-    while True:
+    try:
+        w = curses.initscr()                                            # initialize
+        curses.use_default_colors()                                     # use the terminal settings for color_pair 0, otherwise it's black and white
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)     # define some other color pairs
+        curses.init_pair(2, curses.COLOR_RED, curses.COLOR_WHITE)
+        curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_YELLOW)
+        w.bkgd(" ", curses.color_pair(1))                               # use a custom for the default
+        # curses.echo()                                                 # show what's being typed
+        curses.noecho()                                                 # or dont
+        while True:
 
-        # draw chat history
-        LINES, COLUMNS = w.getmaxyx()
-        for i in range(LINES - 1):
-            if i < len(messages):                    
-                message = messages[-1 * (i + 1)]
-                index = messages.index(message)
-                color = 1 if message[0] == 0 else 2
-                w.addstr(LINES - i - 2, 0, "  " + message[1], curses.A_BOLD | curses.color_pair(color))    # draw the line
-            else:
-                w.addstr(LINES - i - 2, 0, "")
-            w.clrtoeol()      # erase the rest of it
-
-        # take input
-        if ready:
-            curses.flushinp()            
-            w.addstr(LINES - 1, 0, "> %s" % "".join(current), curses.color_pair(1))          # display something
-            w.clrtoeol()
-            curses.curs_set(1)            
-            ch = w.getch()
-            if ch != 10:
-                if ch == 127 or ch == 8:
-                    if len(current):
-                        current.pop()
-                # elif ch < 128 and len(current) < 30:                    # restrict to ascii. make it 256 if you need latin.
-                elif len(current) < 30 and chr(ch).upper() in CHARACTERS:
-                    current.append(chr(ch).upper())
-            else:
-                message_s = "".join(current).strip()
-                if message_s == "MARADONA":
-                    exit()          
-                elif message_s == "UNDO":
-                    if len(messages):
-                        messages.pop()          
-                    current = []
-                elif len(message_s):
-                    messages.append((0, message_s))
-                    sender.messages.put(message_s)
-                    current = []
-                    flush_messages()
-                    ready = False
-            # w.addstr(LINES - 1, 0, "> %s" % "".join(current), curses.color_pair(1))          # display something
-            w.clrtoeol()                                                # erase from cursor to end of line                
-            w.refresh()
-
-        # get a response
-        else:
-            curses.curs_set(0)
-            w.addstr(LINES - 1, 0, "> " + "".join(current) + " " + next(spinner), curses.A_REVERSE)
-            w.clrtoeol()
-            w.refresh()
-            time.sleep(0.1)
-            c = get_message()
-            if c is not None:
-                if c == "DONE":
-                    messages.append((1, "".join(current)))
-                    ready = True
-                    current = []
+            # draw chat history
+            LINES, COLUMNS = w.getmaxyx()
+            for i in range(LINES - 1):
+                if i < len(messages):                    
+                    message = messages[-1 * (i + 1)]
+                    index = messages.index(message)
+                    color = 1 if message[0] == 0 else 2
+                    w.addstr(LINES - i - 2, 0, "  " + message[1], curses.A_BOLD | curses.color_pair(color))    # draw the line
                 else:
-                    current.append(c)
+                    w.addstr(LINES - i - 2, 0, "")
+                w.clrtoeol()      # erase the rest of it
 
+            # take input
+            if ready:
+                curses.flushinp()            
+                w.addstr(LINES - 1, 0, "> %s" % "".join(current), curses.color_pair(1))          # display something
+                w.clrtoeol()
+                curses.curs_set(1)            
+                ch = w.getch()
+                if ch != 10:
+                    if ch == 127 or ch == 8:
+                        if len(current):
+                            current.pop()
+                    # elif ch < 128 and len(current) < 30:                    # restrict to ascii. make it 256 if you need latin.
+                    elif len(current) < 30 and chr(ch).upper() in CHARACTERS:
+                        current.append(chr(ch).upper())
+                else:
+                    message_s = "".join(current).strip()
+                    if message_s == "MARADONA":
+                        exit()          
+                    elif message_s == "UNDO":
+                        if len(messages):
+                            messages.pop()          
+                        current = []
+                    elif len(message_s):
+                        messages.append((0, message_s))
+                        sender.messages.put(message_s)
+                        current = []
+                        flush_messages()
+                        ready = False
+                # w.addstr(LINES - 1, 0, "> %s" % "".join(current), curses.color_pair(1))          # display something
+                w.clrtoeol()                                                # erase from cursor to end of line                
+                w.refresh()
 
-    # except Exception as e:
-    #     log.error(log.exc(e))
+            # get a response
+            else:
+                curses.curs_set(0)
+                w.addstr(LINES - 1, 0, "> " + "".join(current) + " " + next(spinner), curses.A_REVERSE)
+                w.clrtoeol()
+                w.refresh()
+                time.sleep(0.1)
+                c = get_message()
+                if c is not None:
+                    if c == "DONE":
+                        messages.append((1, "".join(current)))
+                        ready = True
+                        current = []
+                    else:
+                        current.append(c)
+
+    except Exception as e:
+        log.error(log.exc(e))
 
 def get_message():
     message = None
