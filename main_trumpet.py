@@ -50,7 +50,7 @@ def on_mouse_press(data):
     y *= ctx.height
     for c, coord in enumerate(coords):
         if x > coord[0][0] and x < coord[1][0] and y > coord[0][1] and y < coord[1][1]:                
-            if c == 36:
+            if c == len(CHARACTERS):
                 sender.messages.put("".join(incoming_message).strip())
                 ctx.textures = []                
                 incoming_message = []
@@ -59,8 +59,6 @@ def on_mouse_press(data):
                 result = subprocess.run(["osascript", "focus.scpt", "main_terminal"], stdout=subprocess.PIPE)
                 log.info(result)        
                 waiting = True                
-            elif c == 35:
-                incoming_message = incoming_message[:-1]
             else:
                 character = CHARACTERS[c]
                 incoming_message.append(character)
@@ -77,7 +75,7 @@ def draw_reception():
     global coords
     ctx.textures = []
     coords = []
-    for i in range(34):
+    for i in range(36):
         filename = "phrases/%s.png" % (i if len(str(i)) == 2 else "0%s" % i)
         image = Image.open(filename)
         w, h = image.size
@@ -88,7 +86,8 @@ def draw_reception():
         x2 = x1 + w
         y2 = y1 + h
         ctx.load_image(filename, x1, y1, w, h)
-        ctx.label((x1 + ((x2 - x1) / 2)) / ctx.width, (y1 + 70) / ctx.height, CHARACTERS[i], font="Monaco", center=True, width=30, size=8)
+        t = CHARACTERS[i] if i < len(CHARACTERS) else ""
+        ctx.label((x1 + ((x2 - x1) / 2)) / ctx.width, (y1 + 70) / ctx.height, t, font="Monaco", center=True, width=30, size=8)
         coords.append(((x1, y1), (x2, y2)))    
 
 def draw():

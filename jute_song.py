@@ -4,6 +4,11 @@ from housepy import log
 phrases = [
     "d'2",
 
+    "d''2",
+
+    "g'4 g'4",
+    "b'4 b'4",    
+
     "d'4 e'4",
     "d'4 e'8. g'16",
 
@@ -106,7 +111,10 @@ if __name__ == "__main__":
                 "e'4 d'4",
                 "d'2",
                 "a'8 b'8 g'4",
-                "d''8 d''8 d''8 a'8",                
+                "d''8 d''8 d''8 a'8",  
+                "g'4 g'4",
+                "b'4 b'4",
+                "d''2",                
                 ]
 
     def purge_dups(material):
