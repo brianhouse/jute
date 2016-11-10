@@ -51,7 +51,7 @@ def on_mouse_press(data):
     for c, coord in enumerate(coords):
         if x > coord[0][0] and x < coord[1][0] and y > coord[0][1] and y < coord[1][1]:                
             if c == len(CHARACTERS):
-                sender.messages.put("".join(incoming_message).strip())
+                sender.messages.put("DONE")
                 ctx.textures = []                
                 incoming_message = []
                 label.text = ""
@@ -61,7 +61,9 @@ def on_mouse_press(data):
                 waiting = True                
             else:
                 character = CHARACTERS[c]
-                incoming_message.append(character)
+                if len(incoming_message) < 30:
+                    incoming_message.append(character)
+                    sender.messages.put(character)
             label.text = "".join(incoming_message)
             break
 

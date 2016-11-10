@@ -41,15 +41,15 @@ def curses_main(args):
                 w.addstr(LINES - i - 2, 0, "  " + message[1], curses.A_BOLD | curses.color_pair(color))    # draw the line
             else:
                 w.addstr(LINES - i - 2, 0, "")
-            w.clrtoeol()      
-                                                                        # erase the rest of it
+            w.clrtoeol()      # erase the rest of it
+
         # take input
         if ready:
-            curses.flushinp()
-            curses.curs_set(1)
+            curses.flushinp()            
             w.addstr(LINES - 1, 0, "> %s" % "".join(current), curses.color_pair(1))          # display something
+            w.clrtoeol()
+            curses.curs_set(1)            
             ch = w.getch()
-            log.debug(ch)
             if ch != 10:
                 if ch == 127 or ch == 8:
                     if len(current):
@@ -71,21 +71,26 @@ def curses_main(args):
                     current = []
                     flush_messages()
                     ready = False
-            w.addstr(LINES - 1, 0, "> %s" % "".join(current), curses.color_pair(1))          # display something
+            # w.addstr(LINES - 1, 0, "> %s" % "".join(current), curses.color_pair(1))          # display something
             w.clrtoeol()                                                # erase from cursor to end of line                
             w.refresh()
 
         # get a response
         else:
             curses.curs_set(0)
-            w.addstr(LINES - 1, 0, "> Waiting for message... " + next(spinner), curses.A_REVERSE)
+            w.addstr(LINES - 1, 0, "> " + "".join(current) + " " + next(spinner), curses.A_REVERSE)
             w.clrtoeol()
             w.refresh()
             time.sleep(0.1)
-            message_s = get_message()
-            if message_s is not None:
-                messages.append((1, message_s))
-                ready = True
+            c = get_message()
+            if c is not None:
+                if c == "DONE":
+                    messages.append((1, "".join(current)))
+                    ready = True
+                    current = []
+                else:
+                    current.append(c)
+
 
     # except Exception as e:
     #     log.error(log.exc(e))
