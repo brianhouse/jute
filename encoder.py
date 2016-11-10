@@ -4,10 +4,11 @@ import sys, smaz, base64, subprocess
 from jute_song import phrases
 from housepy import config, log
 
+CHARACTERS = config['characters']
 
 def music(message):
     song = []
-    for c in encode(message):
+    for c in message:
         index = CHARACTERS.index(c)
         phrase = phrases[index % len(phrases)]
         if len(song) % 4 == 3:

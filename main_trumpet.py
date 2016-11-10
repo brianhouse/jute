@@ -21,7 +21,7 @@ sender = link.Sender(23232)
 receiver = link.Receiver(23234)
 
 animation.show_fps = False
-ctx = animation.Context(859, 556, title="JUTE", background=(1., 1., 1., 1.), screen=1, fullscreen=False, chrome=False)  
+ctx = animation.Context(859, 556, title="JUTE", background=(1., 1., 1., 1.), screen=1, fullscreen=config['fullscreen'], chrome=False)  
 
 
 def on_mouse_press(data):
@@ -38,7 +38,7 @@ def on_mouse_press(data):
         ctx.textures = []                
         incoming_message = []
         label.text = ""
-        ctx.objects = [o for o in o if o is label]
+        ctx.objects = [o for o in ctx.objects if o is label]
         draw_reception()        
         transmitting = False
         return
@@ -55,7 +55,7 @@ def on_mouse_press(data):
                 ctx.textures = []                
                 incoming_message = []
                 label.text = ""
-                ctx.objects = [o for o in o if o is label]
+                ctx.objects = [o for o in ctx.objects if o is label]
                 result = subprocess.run(["osascript", "focus.scpt", "main_terminal"], stdout=subprocess.PIPE)
                 log.info(result)        
                 waiting = True                

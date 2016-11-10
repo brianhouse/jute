@@ -8,6 +8,8 @@
 
 //
 
-- should come in letter by letter, right
+- should come in letter by letter, right, with spinner
 
-- extra 3
+- center receiver
+
+- color change to green
