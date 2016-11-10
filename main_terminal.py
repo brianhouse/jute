@@ -23,8 +23,8 @@ def curses_main(args):
     try:
         w = curses.initscr()                                            # initialize
         curses.use_default_colors()                                     # use the terminal settings for color_pair 0, otherwise it's black and white
-        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)     # define some other color pairs
-        curses.init_pair(2, curses.COLOR_RED, curses.COLOR_WHITE)
+        curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_WHITE)     # define some other color pairs
+        curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_WHITE)
         curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_YELLOW)
         w.bkgd(" ", curses.color_pair(1))                               # use a custom for the default
         # curses.echo()                                                 # show what's being typed
@@ -78,7 +78,7 @@ def curses_main(args):
             # get a response
             else:
                 curses.curs_set(0)
-                w.addstr(LINES - 1, 0, "> " + "".join(current) + " " + next(spinner), curses.A_REVERSE)
+                w.addstr(LINES - 1, 0, "> " + "".join(current) + " " + next(spinner), curses.A_REVERSE | curses.color_pair(2))
                 w.clrtoeol()
                 w.refresh()
                 time.sleep(0.1)
@@ -93,6 +93,7 @@ def curses_main(args):
 
     except Exception as e:
         log.error(log.exc(e))
+        # raise e
 
 def get_message():
     message = None

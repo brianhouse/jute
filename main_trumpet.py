@@ -41,6 +41,7 @@ def on_mouse_press(data):
         ctx.objects = [o for o in ctx.objects if o is label]
         draw_reception()        
         transmitting = False
+        flush_messages()
         return
 
     # receiving mode: process clicks and build message
@@ -110,6 +111,13 @@ def draw():
             waiting = False
             transmitting = True
     time.sleep(0.05)
+
+def flush_messages():
+    while True:
+        try:
+            receiver.messages.get_nowait()
+        except queue.Empty:
+            break
 
 if not config['start']:
     waiting = False
