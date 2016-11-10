@@ -21,7 +21,7 @@ sender = link.Sender(23232)
 receiver = link.Receiver(23234)
 
 animation.show_fps = False
-ctx = animation.Context(859, 556, title="JUTE", background=(1., 1., 1., 1.), screen=1, fullscreen=config['fullscreen'], chrome=False)  
+ctx = animation.Context(859, 556, title="OH DEAR ME", background=(1., 1., 1., 1.), screen=1, fullscreen=config['fullscreen'], chrome=not config['fullscreen'])  
 
 
 def on_mouse_press(data):

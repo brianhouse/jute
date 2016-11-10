@@ -11,7 +11,7 @@ def music(message):
     for c in message:
         index = CHARACTERS.index(c)
         phrase = phrases[index % len(phrases)]
-        if len(song) % 4 == 3:
+        if len(song) % 2 == 1:
             phrase += ' \\bar "||"'
         song.append(phrase)
     song = ' '.join(song)
