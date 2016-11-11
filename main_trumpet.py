@@ -82,8 +82,8 @@ def draw_reception():
         filename = "phrases/%s.png" % (i if len(str(i)) == 2 else "0%s" % i)
         image = Image.open(filename)
         w, h = image.size
-        x1 = 600 + (i % 8) * (70 + 25)
-        y1 = 800 - ((i // 8) * (70 + 25))
+        x1 = (600 if config['fullscreen'] else 100) + (i % 8) * (70 + 25)
+        y1 = (800 if config['fullscreen'] else 450) - ((i // 8) * (70 + 25))
         x2 = x1 + w
         y2 = y1 + h
         ctx.load_image(filename, x1, y1, w, h)
