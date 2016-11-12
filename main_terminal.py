@@ -88,6 +88,9 @@ def curses_main(args):
                         messages.append((1, "".join(current)))
                         ready = True
                         current = []
+                    elif c == "ERASE":
+                        if len(current):
+                            current.pop()
                     else:
                         current.append(c)
 

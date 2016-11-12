@@ -51,7 +51,7 @@ def on_mouse_press(data):
     y *= ctx.height
     for c, coord in enumerate(coords):
         if x > coord[0][0] and x < coord[1][0] and y > coord[0][1] and y < coord[1][1]:                
-            if c == len(CHARACTERS):
+            if c == len(CHARACTERS) + 1:
                 sender.messages.put("DONE")
                 ctx.textures = []                
                 incoming_message = []
@@ -59,7 +59,11 @@ def on_mouse_press(data):
                 ctx.objects = [o for o in ctx.objects if o is label]
                 result = subprocess.run(["osascript", "focus.scpt", "main_terminal"], stdout=subprocess.PIPE)
                 log.info(result)        
-                waiting = True                
+                waiting = True           
+            elif c == len(CHARACTERS):
+                if len(incoming_message):
+                    incoming_message.pop()
+                    sender.messages.put("ERASE")
             else:
                 character = CHARACTERS[c]
                 if len(incoming_message) < 30:
@@ -78,7 +82,7 @@ def draw_reception():
     global coords
     ctx.textures = []
     coords = []
-    for i in range(36):
+    for i in range(37):
         filename = "phrases/%s.png" % (i if len(str(i)) == 2 else "0%s" % i)
         image = Image.open(filename)
         w, h = image.size
